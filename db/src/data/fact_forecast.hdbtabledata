@@ -1,0 +1,33 @@
+{
+    "format_version": 1,
+    "imports": [
+        {
+            "target_table": "training.Tables::FACT_FORECAST",
+            "source_data": {
+                "data_type": "CSV",
+                "file_name": "training.data::FACT_FORECAST.csv",
+                "has_header": true,
+                "dialect": "HANA",
+                "type_config": {
+                    "delimiter": ","
+                }
+            },
+            "import_settings": {
+                "import_columns": [
+                    "DATE_KEY",
+                    "CUSTOMER_KEY",
+                    "PRODUCT_KEY",
+                    "LOCATION_KEY",
+                    "SALES_ORG_KEY",
+                    "SCENARIO_KEY",
+                    "KPI_KEY",
+                    "SOURCE_KEY",
+                    "ACTUAL_QTY",
+                    "ACTUAL_AMT",
+                    "FORECAST_QTY",
+                    "FORECAST_AMT"
+                ]
+            }
+        }
+    ]
+}

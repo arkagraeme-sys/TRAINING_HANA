@@ -1,0 +1,6 @@
+CUSTOMER_KEY,CUSTOMER_NAME,CUSTOMER_TYPE,COUNTRY,REGION
+C10001,Walmart,Retail,USA,East
+C10002,Kroger,Retail,USA,Central
+C10003,Target,Retail,USA,East
+C10004,Costco,Wholesale,USA,West
+C10005,Sams Club,Wholesale,USA,Central

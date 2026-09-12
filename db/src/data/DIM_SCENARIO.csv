@@ -1,0 +1,4 @@
+SCENARIO_KEY,SCENARIO_NAME,DESCRIPTION
+ACT,Actual,Actual Sales
+FCST,Forecast,Statistical or Consensus Forecast
+OPEN,Open Orders,Open Customer Orders

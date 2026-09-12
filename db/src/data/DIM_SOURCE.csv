@@ -1,0 +1,5 @@
+SOURCE_KEY,SOURCE_NAME,DESCRIPTION
+FCTA,Actual & Forecast,CT61 Flow 1
+CURR,Current Forecast,CT61 Flow 2/6/7
+OPEN,Open Orders,CT61 Flow 3
+DLY,Daily or Weekly DP Forecast,CT61 Flow 4/5

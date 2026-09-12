@@ -1,0 +1,25 @@
+{
+    "format_version": 1,
+    "imports": [
+        {
+            "target_table": "training.Tables::DIM_SALES_ORG",
+            "source_data": {
+                "data_type": "CSV",
+                "file_name": "training.data::DIM_SALES_ORG.csv",
+                "has_header": true,
+                "dialect": "HANA",
+                "type_config": {
+                    "delimiter": ","
+                }
+            },
+            "import_settings": {
+                "import_columns": [
+                    "SALES_ORG_KEY",
+                    "SALES_ORG_CODE",
+                    "SALES_ORG_NAME",
+                    "COUNTRY"
+                ]
+            }
+        }
+    ]
+}

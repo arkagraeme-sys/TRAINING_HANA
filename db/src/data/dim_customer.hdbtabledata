@@ -1,0 +1,26 @@
+{
+    "format_version": 1,
+    "imports": [
+        {
+            "target_table": "training.Tables::DIM_CUSTOMER",
+            "source_data": {
+                "data_type": "CSV",
+                "file_name": "training.data::DIM_CUSTOMER.csv",
+                "has_header": true,
+                "dialect": "HANA",
+                "type_config": {
+                    "delimiter": ","
+                }
+            },
+            "import_settings": {
+                "import_columns": [
+                    "CUSTOMER_KEY",
+                    "CUSTOMER_NAME",
+                    "CUSTOMER_TYPE",
+                    "COUNTRY",
+                    "REGION"
+                ]
+            }
+        }
+    ]
+}

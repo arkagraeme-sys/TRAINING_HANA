@@ -1,0 +1,26 @@
+{
+    "format_version": 1,
+    "imports": [
+        {
+            "target_table": "training.Tables::DIM_LOCATION",
+            "source_data": {
+                "data_type": "CSV",
+                "file_name": "training.data::DIM_LOCATION.csv",
+                "has_header": true,
+                "dialect": "HANA",
+                "type_config": {
+                    "delimiter": ","
+                }
+            },
+            "import_settings": {
+                "import_columns": [
+                    "LOCATION_KEY",
+                    "CITY",
+                    "STATE",
+                    "REGION",
+                    "COUNTRY"
+                ]
+            }
+        }
+    ]
+}
