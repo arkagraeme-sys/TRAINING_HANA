@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Privilege:analyticPrivilege xmlns:Privilege="http://www.sap.com/ndb/BiModelPrivilege.ecore" id="training.AP::scenario_access" privilegeType="SQL_ANALYTIC_PRIVILEGE" schemaVersion="1.1">
+<descriptions defaultDescription="scenario_access"/>
+<securedModels>
+  <modelUri>training.Views.Dimension Views::scenario</modelUri>
+</securedModels>
+<whereSql>SCENARIO_NAME = 'Actual'</whereSql>
+</Privilege:analyticPrivilege>
