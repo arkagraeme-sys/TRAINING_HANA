@@ -1,0 +1,405 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="training.Views.Dimension Views.CV::Rank CV" applyPrivilegeType="NONE" dataCategory="CUBE" schemaVersion="3.0" hierarchyGeneration="SQL" outputViewType="Projection" application="BAS" cacheInvalidationPeriod="NONE" enforceSqlExecution="true">
+<descriptions defaultDescription="Main_Fact"/>
+<localVariables/>
+<variableMappings/>
+<dataSources>
+  <DataSource id="training.Tables::FACT_SALES">
+    <resourceUri>training.Tables::FACT_SALES</resourceUri>
+  </DataSource>
+  <DataSource id="training.Tables::FACT_FORECAST">
+    <resourceUri>training.Tables::FACT_FORECAST</resourceUri>
+  </DataSource>
+  <DataSource id="training.Tables::DIM_LOCATION">
+    <resourceUri>training.Tables::DIM_LOCATION</resourceUri>
+  </DataSource>
+  <DataSource id="training.Tables::DIM_SOURCE">
+    <resourceUri>training.Tables::DIM_SOURCE</resourceUri>
+  </DataSource>
+</dataSources>
+<snapshotProcedures/>
+<calculationViews>
+  <calculationView xsi:type="Calculation:ProjectionView" id="ACT">
+    <viewAttributes>
+      <viewAttribute id="DATE_KEY"/>
+      <viewAttribute id="CUSTOMER_KEY"/>
+      <viewAttribute id="PRODUCT_KEY"/>
+      <viewAttribute id="LOCATION_KEY"/>
+      <viewAttribute id="SALES_ORG_KEY"/>
+      <viewAttribute id="SCENARIO_KEY"/>
+      <viewAttribute id="KPI_KEY"/>
+      <viewAttribute id="SOURCE_KEY"/>
+      <viewAttribute id="SALES_QTY"/>
+      <viewAttribute id="SALES_AMT"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="training.Tables::FACT_SALES"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:ProjectionView" id="FCST">
+    <viewAttributes>
+      <viewAttribute id="DATE_KEY"/>
+      <viewAttribute id="CUSTOMER_KEY"/>
+      <viewAttribute id="PRODUCT_KEY"/>
+      <viewAttribute id="LOCATION_KEY"/>
+      <viewAttribute id="SALES_ORG_KEY"/>
+      <viewAttribute id="SCENARIO_KEY"/>
+      <viewAttribute id="KPI_KEY"/>
+      <viewAttribute id="SOURCE_KEY"/>
+      <viewAttribute id="ACTUAL_QTY"/>
+      <viewAttribute id="ACTUAL_AMT"/>
+      <viewAttribute id="FORECAST_QTY"/>
+      <viewAttribute id="FORECAST_AMT"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="training.Tables::FACT_FORECAST"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:ProjectionView" id="Projection_1">
+    <viewAttributes>
+      <viewAttribute id="LOCATION_KEY"/>
+      <viewAttribute id="CITY"/>
+      <viewAttribute id="STATE"/>
+      <viewAttribute id="REGION"/>
+      <viewAttribute id="COUNTRY"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="training.Tables::DIM_LOCATION"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:ProjectionView" id="Projection_2">
+    <viewAttributes>
+      <viewAttribute id="SOURCE_KEY"/>
+      <viewAttribute id="SOURCE_NAME"/>
+      <viewAttribute id="DESCRIPTION"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="training.Tables::DIM_SOURCE"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:UnionView" id="Union_1">
+    <viewAttributes>
+      <viewAttribute id="DATE_KEY" aggregationType="sum"/>
+      <viewAttribute id="CUSTOMER_KEY"/>
+      <viewAttribute id="PRODUCT_KEY"/>
+      <viewAttribute id="LOCATION_KEY"/>
+      <viewAttribute id="SALES_ORG_KEY"/>
+      <viewAttribute id="SCENARIO_KEY"/>
+      <viewAttribute id="KPI_KEY"/>
+      <viewAttribute id="SOURCE_KEY"/>
+      <viewAttribute id="SALES_QTY" aggregationType="sum"/>
+      <viewAttribute id="SALES_AMT" aggregationType="sum"/>
+      <viewAttribute id="ACTUAL_QTY" aggregationType="sum"/>
+      <viewAttribute id="ACTUAL_AMT" aggregationType="sum"/>
+      <viewAttribute id="FORECAST_QTY" aggregationType="sum"/>
+      <viewAttribute id="FORECAST_AMT" aggregationType="sum"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="ACT" emptyUnionBehavior="NO_ROW">
+      <mapping xsi:type="Calculation:AttributeMapping" target="DATE_KEY" source="DATE_KEY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="CUSTOMER_KEY" source="CUSTOMER_KEY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="PRODUCT_KEY" source="PRODUCT_KEY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="LOCATION_KEY" source="LOCATION_KEY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="SALES_ORG_KEY" source="SALES_ORG_KEY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="SCENARIO_KEY" source="SCENARIO_KEY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="KPI_KEY" source="KPI_KEY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="SOURCE_KEY" source="SOURCE_KEY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="SALES_QTY" source="SALES_QTY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="SALES_AMT" source="SALES_AMT"/>
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="ACTUAL_QTY" null="true"/>
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="ACTUAL_AMT" null="true"/>
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="FORECAST_QTY" null="true"/>
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="FORECAST_AMT" null="true"/>
+    </input>
+    <input node="FCST" emptyUnionBehavior="NO_ROW">
+      <mapping xsi:type="Calculation:AttributeMapping" target="DATE_KEY" source="DATE_KEY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="CUSTOMER_KEY" source="CUSTOMER_KEY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="PRODUCT_KEY" source="PRODUCT_KEY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="LOCATION_KEY" source="LOCATION_KEY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="SALES_ORG_KEY" source="SALES_ORG_KEY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="SCENARIO_KEY" source="SCENARIO_KEY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="KPI_KEY" source="KPI_KEY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="SOURCE_KEY" source="SOURCE_KEY"/>
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="SALES_QTY" null="true"/>
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="SALES_AMT" null="true"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ACTUAL_QTY" source="ACTUAL_QTY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ACTUAL_AMT" source="ACTUAL_AMT"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="FORECAST_QTY" source="FORECAST_QTY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="FORECAST_AMT" source="FORECAST_AMT"/>
+    </input>
+  </calculationView>
+  <calculationView xsi:type="Calculation:JoinView" id="Join_1" cardinality="CN_1" joinType="leftOuter">
+    <viewAttributes>
+      <viewAttribute id="DATE_KEY" aggregationType="sum"/>
+      <viewAttribute id="CUSTOMER_KEY"/>
+      <viewAttribute id="PRODUCT_KEY"/>
+      <viewAttribute id="LOCATION_KEY"/>
+      <viewAttribute id="SALES_ORG_KEY"/>
+      <viewAttribute id="SCENARIO_KEY"/>
+      <viewAttribute id="KPI_KEY"/>
+      <viewAttribute id="SOURCE_KEY"/>
+      <viewAttribute id="SALES_QTY" aggregationType="sum"/>
+      <viewAttribute id="SALES_AMT" aggregationType="sum"/>
+      <viewAttribute id="ACTUAL_QTY" aggregationType="sum"/>
+      <viewAttribute id="ACTUAL_AMT" aggregationType="sum"/>
+      <viewAttribute id="FORECAST_QTY" aggregationType="sum"/>
+      <viewAttribute id="FORECAST_AMT" aggregationType="sum"/>
+      <viewAttribute id="CITY"/>
+      <viewAttribute id="STATE"/>
+      <viewAttribute id="REGION"/>
+      <viewAttribute id="COUNTRY"/>
+      <viewAttribute hidden="true" id="JOIN$LOCATION_KEY$LOCATION_KEY"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="Union_1">
+      <mapping xsi:type="Calculation:AttributeMapping" target="DATE_KEY" source="DATE_KEY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="CUSTOMER_KEY" source="CUSTOMER_KEY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="PRODUCT_KEY" source="PRODUCT_KEY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="LOCATION_KEY" source="LOCATION_KEY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="SALES_ORG_KEY" source="SALES_ORG_KEY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="SCENARIO_KEY" source="SCENARIO_KEY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="KPI_KEY" source="KPI_KEY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="SOURCE_KEY" source="SOURCE_KEY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="SALES_QTY" source="SALES_QTY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="SALES_AMT" source="SALES_AMT"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ACTUAL_QTY" source="ACTUAL_QTY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ACTUAL_AMT" source="ACTUAL_AMT"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="FORECAST_QTY" source="FORECAST_QTY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="FORECAST_AMT" source="FORECAST_AMT"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$LOCATION_KEY$LOCATION_KEY" source="LOCATION_KEY"/>
+    </input>
+    <input node="Projection_1">
+      <mapping xsi:type="Calculation:AttributeMapping" target="CITY" source="CITY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="STATE" source="STATE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="REGION" source="REGION"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="COUNTRY" source="COUNTRY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$LOCATION_KEY$LOCATION_KEY" source="LOCATION_KEY"/>
+    </input>
+    <joinAttribute name="JOIN$LOCATION_KEY$LOCATION_KEY"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:JoinView" id="Join_2" cardinality="CN_1" joinType="leftOuter">
+    <viewAttributes>
+      <viewAttribute id="DATE_KEY" aggregationType="sum"/>
+      <viewAttribute id="CUSTOMER_KEY"/>
+      <viewAttribute id="PRODUCT_KEY"/>
+      <viewAttribute id="LOCATION_KEY"/>
+      <viewAttribute id="SALES_ORG_KEY"/>
+      <viewAttribute id="SCENARIO_KEY"/>
+      <viewAttribute id="KPI_KEY"/>
+      <viewAttribute id="SOURCE_KEY"/>
+      <viewAttribute id="SALES_QTY" aggregationType="sum"/>
+      <viewAttribute id="SALES_AMT" aggregationType="sum"/>
+      <viewAttribute id="ACTUAL_QTY" aggregationType="sum"/>
+      <viewAttribute id="ACTUAL_AMT" aggregationType="sum"/>
+      <viewAttribute id="FORECAST_QTY" aggregationType="sum"/>
+      <viewAttribute id="FORECAST_AMT" aggregationType="sum"/>
+      <viewAttribute id="CITY"/>
+      <viewAttribute id="STATE"/>
+      <viewAttribute id="REGION"/>
+      <viewAttribute id="COUNTRY"/>
+      <viewAttribute id="SOURCE_NAME"/>
+      <viewAttribute id="DESCRIPTION"/>
+      <viewAttribute hidden="true" id="JOIN$SOURCE_KEY$SOURCE_KEY"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="Join_1">
+      <mapping xsi:type="Calculation:AttributeMapping" target="DATE_KEY" source="DATE_KEY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="CUSTOMER_KEY" source="CUSTOMER_KEY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="PRODUCT_KEY" source="PRODUCT_KEY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="LOCATION_KEY" source="LOCATION_KEY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="SALES_ORG_KEY" source="SALES_ORG_KEY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="SCENARIO_KEY" source="SCENARIO_KEY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="KPI_KEY" source="KPI_KEY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="SOURCE_KEY" source="SOURCE_KEY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="SALES_QTY" source="SALES_QTY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="SALES_AMT" source="SALES_AMT"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ACTUAL_QTY" source="ACTUAL_QTY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ACTUAL_AMT" source="ACTUAL_AMT"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="FORECAST_QTY" source="FORECAST_QTY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="FORECAST_AMT" source="FORECAST_AMT"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="CITY" source="CITY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="STATE" source="STATE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="REGION" source="REGION"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="COUNTRY" source="COUNTRY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$SOURCE_KEY$SOURCE_KEY" source="SOURCE_KEY"/>
+    </input>
+    <input node="Projection_2">
+      <mapping xsi:type="Calculation:AttributeMapping" target="SOURCE_NAME" source="SOURCE_NAME"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="DESCRIPTION" source="DESCRIPTION"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$SOURCE_KEY$SOURCE_KEY" source="SOURCE_KEY"/>
+    </input>
+    <joinAttribute name="JOIN$SOURCE_KEY$SOURCE_KEY"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:AggregationView" id="Aggregation_1">
+    <viewAttributes>
+      <viewAttribute id="PRODUCT_KEY"/>
+      <viewAttribute id="LOCATION_KEY"/>
+      <viewAttribute id="SALES_QTY" aggregationType="sum"/>
+      <viewAttribute id="SALES_AMT" aggregationType="sum"/>
+      <viewAttribute id="ACTUAL_QTY" aggregationType="sum"/>
+      <viewAttribute id="ACTUAL_AMT" aggregationType="sum"/>
+      <viewAttribute id="FORECAST_QTY" aggregationType="sum"/>
+      <viewAttribute id="FORECAST_AMT" aggregationType="sum"/>
+      <viewAttribute id="CITY"/>
+      <viewAttribute id="STATE"/>
+      <viewAttribute id="REGION"/>
+      <viewAttribute id="COUNTRY"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <restrictedViewAttributes/>
+    <input node="Join_2"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:RankView" id="Rank_1" allowFilterPushdown="true">
+    <viewAttributes>
+      <viewAttribute id="PRODUCT_KEY"/>
+      <viewAttribute id="LOCATION_KEY"/>
+      <viewAttribute id="SALES_QTY" aggregationType="sum"/>
+      <viewAttribute id="SALES_AMT" aggregationType="sum"/>
+      <viewAttribute id="ACTUAL_QTY" aggregationType="sum"/>
+      <viewAttribute id="ACTUAL_AMT" aggregationType="sum"/>
+      <viewAttribute id="FORECAST_QTY" aggregationType="sum"/>
+      <viewAttribute id="FORECAST_AMT" aggregationType="sum"/>
+      <viewAttribute id="CITY"/>
+      <viewAttribute id="STATE"/>
+      <viewAttribute id="REGION"/>
+      <viewAttribute id="COUNTRY"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="Aggregation_1"/>
+    <rankingFilter type="RANK" offset="0" offsetReference="FRONT" dynamicPartitionAttributes="false">
+      <partitionViewAttributeName id="REGION"/>
+      <order byViewAttributeName="ACTUAL_AMT" direction="ASC"/>
+      <rankThreshold>
+        <value>1</value>
+      </rankThreshold>
+    </rankingFilter>
+  </calculationView>
+</calculationViews>
+<logicalModel id="Rank_1">
+  <attributes>
+    <attribute id="PRODUCT_KEY" order="1" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="PRODUCT_KEY"/>
+      <keyMapping columnObjectName="Rank_1" columnName="PRODUCT_KEY"/>
+    </attribute>
+    <attribute id="LOCATION_KEY" order="2" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="LOCATION_KEY"/>
+      <keyMapping columnObjectName="Rank_1" columnName="LOCATION_KEY"/>
+    </attribute>
+    <attribute id="CITY" order="9" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="CITY"/>
+      <keyMapping columnObjectName="Rank_1" columnName="CITY"/>
+    </attribute>
+    <attribute id="STATE" order="10" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="STATE"/>
+      <keyMapping columnObjectName="Rank_1" columnName="STATE"/>
+    </attribute>
+    <attribute id="REGION" order="11" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="REGION"/>
+      <keyMapping columnObjectName="Rank_1" columnName="REGION"/>
+    </attribute>
+    <attribute id="COUNTRY" order="12" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="COUNTRY"/>
+      <keyMapping columnObjectName="Rank_1" columnName="COUNTRY"/>
+    </attribute></attributes>
+  <calculatedAttributes/>
+  <baseMeasures>
+    <measure id="SALES_QTY" order="3" aggregationType="sum" measureType="simple">
+      <descriptions defaultDescription="SALES_QTY"/>
+      <measureMapping columnObjectName="Rank_1" columnName="SALES_QTY"/>
+      <exceptionAggregationMetadata/>
+    </measure>
+    <measure id="SALES_AMT" order="4" aggregationType="sum" measureType="simple">
+      <descriptions defaultDescription="SALES_AMT"/>
+      <measureMapping columnObjectName="Rank_1" columnName="SALES_AMT"/>
+      <exceptionAggregationMetadata/>
+    </measure>
+    <measure id="ACTUAL_QTY" order="5" aggregationType="sum" measureType="simple">
+      <descriptions defaultDescription="ACTUAL_QTY"/>
+      <measureMapping columnObjectName="Rank_1" columnName="ACTUAL_QTY"/>
+      <exceptionAggregationMetadata/>
+    </measure>
+    <measure id="ACTUAL_AMT" order="6" aggregationType="sum" measureType="simple">
+      <descriptions defaultDescription="ACTUAL_AMT"/>
+      <measureMapping columnObjectName="Rank_1" columnName="ACTUAL_AMT"/>
+      <exceptionAggregationMetadata/>
+    </measure>
+    <measure id="FORECAST_QTY" order="7" aggregationType="sum" measureType="simple">
+      <descriptions defaultDescription="FORECAST_QTY"/>
+      <measureMapping columnObjectName="Rank_1" columnName="FORECAST_QTY"/>
+      <exceptionAggregationMetadata/>
+    </measure>
+    <measure id="FORECAST_AMT" order="8" aggregationType="sum" measureType="simple">
+      <descriptions defaultDescription="FORECAST_AMT"/>
+      <measureMapping columnObjectName="Rank_1" columnName="FORECAST_AMT"/>
+      <exceptionAggregationMetadata/>
+    </measure>
+  </baseMeasures>
+  <calculatedMeasures>
+    <measure id="CC_1" order="13" aggregationType="sum" measureType="simple" datatype="INTEGER" expressionLanguage="SQL">
+      <formula>1</formula>
+      <exceptionAggregationMetadata/>
+    </measure>
+  </calculatedMeasures>
+  <restrictedMeasures/>
+  <localDimensions/>
+</logicalModel>
+<layout>
+  <shapes>
+    <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+      <upperLeftCorner x="441.11436516432036" y="112"/>
+    
+      <rectangleSize width="160"/>
+    </shape>
+  
+    <shape expanded="true" modelObjectName="ACT" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="92.00000000000001" y="926.9999952316284"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="FCST" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="302" y="926.9999952316284"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="Projection_1" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="384.16457466851165" y="786.9999964237213"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="Projection_2" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="489.74246969474535" y="626.9999976158142"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+  
+    <shape expanded="true" modelObjectName="Union_1" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="118.66666666666664" y="786.9999964237213"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="Join_1" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="145.33333333333326" y="626.9999976158142"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape modelObjectName="Union_1" modelObjectNameSpace="Join_1" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="20" y="30"/>
+      <rectangleSize width="200"/>
+    </shape>
+    <shape modelObjectName="Projection_1" modelObjectNameSpace="Join_1" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="320" y="30"/>
+      <rectangleSize width="136"/>
+    </shape>
+    <shape expanded="true" modelObjectName="Join_2" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="425.6855344530451" y="466.9999988079071"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape modelObjectName="Join_1" modelObjectNameSpace="Join_2" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="20" y="30"/>
+      <rectangleSize width="250"/>
+    </shape>
+    <shape modelObjectName="Projection_2" modelObjectNameSpace="Join_2" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="320" y="30"/>
+      <rectangleSize width="190"/>
+    </shape>
+    <shape expanded="true" modelObjectName="Aggregation_1" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="425.6855344530451" y="361.9999988079071"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="Rank_1" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="441.11436516432036" y="217"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+  </shapes>
+</layout>
+</Calculation:scenario>
