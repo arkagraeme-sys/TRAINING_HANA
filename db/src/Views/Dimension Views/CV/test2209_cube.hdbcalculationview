@@ -1,0 +1,423 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:AccessControl="http://www.sap.com/ndb/SQLCoreModelAccessControl.ecore" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" xmlns:Privilege="http://www.sap.com/ndb/BiModelPrivilege.ecore" id="training.Views.Dimension Views.CV::test2209_cube" applyPrivilegeType="NONE" dataCategory="CUBE" schemaVersion="3.0" hierarchyGeneration="SQL" outputViewType="Aggregation" application="BAS" cacheInvalidationPeriod="NONE" enforceSqlExecution="true">
+<descriptions defaultDescription="test2209_cube"/>
+<localVariables>
+  <variable id="IP_LOCATION_KEY" parameter="true">
+    <descriptions defaultDescription="Location Key"/>
+    <variableProperties datatype="NVARCHAR" length="20" mandatory="false">
+      <valueDomain type="AttributeValue">
+  
+    <attribute name="LOCATION_KEY"/>
+  </valueDomain>
+      <selection multiLine="false" type="SingleValue"/>
+    </variableProperties>
+  </variable>
+
+  <variable id="IP_PROJ_SALES" parameter="true">
+    <descriptions defaultDescription="Proj / Sales Selector "/>
+    <variableProperties datatype="NVARCHAR" length="13" mandatory="true">
+      <valueDomain type="StaticList">
+        <listEntry id="1">
+          <descriptions defaultDescription="PROJ"/>
+        </listEntry>
+        <listEntry id="2">
+          <descriptions defaultDescription="SALES"/>
+        </listEntry>
+      </valueDomain>
+      <selection multiLine="false" type="SingleValue"/>
+    </variableProperties>
+  </variable>
+
+  <variable id="IP_LASTMONTH_DATE" parameter="true">
+    <descriptions defaultDescription="Last Month 1st Day"/>
+    <variableProperties mandatory="false">
+      <valueDomain type="empty"/>
+      <selection multiLine="false" type="SingleValue"/>
+      <derivationRule>
+        <resourceUri>training.SP::SP_GET_LAST_MONTH_FIRST_DATE</resourceUri>
+      </derivationRule>
+    </variableProperties>
+  </variable>
+</localVariables>
+<variableMappings/>
+<dataSources>
+  <DataSource id="training.Tables::FACT_SALES">
+    <resourceUri>training.Tables::FACT_SALES</resourceUri>
+  </DataSource>
+  <DataSource id="training.Tables::DIM_PRODUCT">
+    <resourceUri>training.Tables::DIM_PRODUCT</resourceUri>
+  </DataSource>
+  <DataSource id="training.Tables::DIM_CUSTOMER">
+    <resourceUri>training.Tables::DIM_CUSTOMER</resourceUri>
+  </DataSource>
+  <DataSource id="training.Tables::FACT_FORECAST">
+    <resourceUri>training.Tables::FACT_FORECAST</resourceUri>
+  </DataSource>
+  <DataSource id="training.TF::TF_SALES_ADJUSTMENTS" type="TABLE_FUNCTION">
+    <resourceUri>training.TF::TF_SALES_ADJUSTMENTS</resourceUri>
+  </DataSource>
+</dataSources>
+<snapshotProcedures/>
+<calculationViews>
+  <calculationView xsi:type="Calculation:ProjectionView" id="FACT_SALES">
+    <viewAttributes>
+      <viewAttribute id="PRODUCT_KEY"/>
+      <viewAttribute id="SALES_QTY"/>
+      <viewAttribute id="CUSTOMER_KEY"/>
+    
+      <viewAttribute id="LOCATION_KEY"/>
+    
+      <viewAttribute id="DATE_KEY"/>
+    </viewAttributes>
+    <calculatedViewAttributes>
+      <calculatedViewAttribute id="CD_DATE" datatype="NVARCHAR" length="8" expressionLanguage="SQL">
+        <formula>TO_NVARCHAR(&quot;DATE_KEY&quot;)</formula>
+      </calculatedViewAttribute>
+    </calculatedViewAttributes>
+    <input node="training.Tables::FACT_SALES"/></calculationView>
+  <calculationView xsi:type="Calculation:ProjectionView" id="PRODUCT_DIM">
+    <viewAttributes>
+      <viewAttribute id="PRODUCT_KEY"/>
+      <viewAttribute id="CATEGORY"/>
+    
+      <viewAttribute id="PRODUCT_NAME"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="training.Tables::DIM_PRODUCT"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:ProjectionView" id="CUSTOMER_DIM">
+    <viewAttributes>
+      <viewAttribute id="CUSTOMER_KEY"/>
+      <viewAttribute id="CUSTOMER_NAME"/>
+    
+      <viewAttribute id="CUSTOMER_TYPE"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="training.Tables::DIM_CUSTOMER"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:ProjectionView" id="FACT_PROJ">
+    <viewAttributes>
+      <viewAttribute id="PRODUCT_KEY"/>
+      <viewAttribute id="CUSTOMER_KEY"/>
+      <viewAttribute id="FORECAST_QTY"/>
+    
+      <viewAttribute id="LOCATION_KEY"/>
+    
+      <viewAttribute id="DATE_KEY"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="training.Tables::FACT_FORECAST"/></calculationView>
+  <calculationView xsi:type="Calculation:ProjectionView" id="Projection_1">
+    <viewAttributes>
+      <viewAttribute id="CUSTOMER_KEY"/>
+      <viewAttribute id="PRODUCT_KEY"/>
+      <viewAttribute id="LOCATION_KEY"/>
+      <viewAttribute id="ADJUSTMENT_QTY"/>
+      <viewAttribute id="ADJUSTMENT_AMT"/>
+    
+      <viewAttribute id="DATE_KEY"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="training.TF::TF_SALES_ADJUSTMENTS"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:ProjectionView" id="Projection_2" filterExpressionLanguage="SQL">
+    <viewAttributes>
+      <viewAttribute id="PRODUCT_KEY"/>
+      <viewAttribute id="SALES_QTY"/>
+      <viewAttribute id="CUSTOMER_KEY"/>
+      <viewAttribute id="LOCATION_KEY"/>
+      <viewAttribute id="DATE_KEY"/>
+      <viewAttribute id="CD_DATE"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="FACT_SALES"/>
+    <filter>&quot;CD_DATE&quot; = '$$IP_LASTMONTH_DATE$$'</filter>
+  </calculationView>
+  <calculationView xsi:type="Calculation:UnionView" id="Union_1" ignoreMultipleOutputsForFilter="false">
+    <viewAttributes>
+      <viewAttribute id="PRODUCT_KEY"/>
+      <viewAttribute id="SALES_QTY" aggregationType="sum"/>
+      <viewAttribute id="CUSTOMER_KEY"/>
+      <viewAttribute id="FORECAST_QTY" aggregationType="sum"/>
+    
+      <viewAttribute id="LOCATION_KEY"/>
+    
+      <viewAttribute datatype="NVARCHAR" length="13" id="CD_FLAG"/>
+    
+      <viewAttribute id="ADJUSTMENT_QTY" aggregationType="sum"/>
+      <viewAttribute id="ADJUSTMENT_AMT" aggregationType="sum"/>
+    
+      <viewAttribute id="DATE_KEY" aggregationType="sum"/>
+      <viewAttribute id="CD_DATE"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="Projection_2" emptyUnionBehavior="NO_ROW">
+      <mapping xsi:type="Calculation:AttributeMapping" target="PRODUCT_KEY" source="PRODUCT_KEY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="SALES_QTY" source="SALES_QTY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="CUSTOMER_KEY" source="CUSTOMER_KEY"/>
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="FORECAST_QTY" null="true"/>
+    
+      <mapping xsi:type="Calculation:AttributeMapping" target="LOCATION_KEY" source="LOCATION_KEY"/>
+    
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="CD_FLAG" null="false" value="2"/>
+    
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="ADJUSTMENT_QTY" null="true"/>
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="ADJUSTMENT_AMT" null="true"/>
+    
+      <mapping xsi:type="Calculation:AttributeMapping" target="DATE_KEY" source="DATE_KEY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="CD_DATE" source="CD_DATE"/>
+    </input>
+    <input node="FACT_PROJ" emptyUnionBehavior="NO_ROW">
+      <mapping xsi:type="Calculation:AttributeMapping" target="PRODUCT_KEY" source="PRODUCT_KEY"/>
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="SALES_QTY" null="true"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="CUSTOMER_KEY" source="CUSTOMER_KEY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="FORECAST_QTY" source="FORECAST_QTY"/>
+    
+      <mapping xsi:type="Calculation:AttributeMapping" target="LOCATION_KEY" source="LOCATION_KEY"/>
+    
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="CD_FLAG" null="false" value="1"/>
+    
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="ADJUSTMENT_QTY" null="true"/>
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="ADJUSTMENT_AMT" null="true"/>
+    
+      <mapping xsi:type="Calculation:AttributeMapping" target="DATE_KEY" source="DATE_KEY"/>
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="CD_DATE" null="true"/>
+    </input>
+  
+    <input node="Projection_1" emptyUnionBehavior="NO_ROW">
+      <mapping xsi:type="Calculation:AttributeMapping" target="PRODUCT_KEY" source="PRODUCT_KEY"/>
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="SALES_QTY" null="true"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="CUSTOMER_KEY" source="CUSTOMER_KEY"/>
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="FORECAST_QTY" null="true"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="LOCATION_KEY" source="LOCATION_KEY"/>
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="CD_FLAG" null="true"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ADJUSTMENT_QTY" source="ADJUSTMENT_QTY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ADJUSTMENT_AMT" source="ADJUSTMENT_AMT"/>
+    
+  
+      <mapping xsi:type="Calculation:AttributeMapping" target="DATE_KEY" source="DATE_KEY"/>
+  
+      <mapping xsi:type="Calculation:ConstantAttributeMapping" target="CD_DATE" null="true"/>
+  
+    </input>
+  </calculationView>
+  <calculationView xsi:type="Calculation:JoinView" id="Join_1" cardinality="CN_1" joinType="leftOuter" optimizeJoinColumns="true">
+    <viewAttributes>
+      <viewAttribute id="CATEGORY"/>
+      <viewAttribute id="PRODUCT_NAME"/>
+      <viewAttribute id="SALES_QTY" aggregationType="sum"/>
+      <viewAttribute id="CUSTOMER_KEY"/>
+      <viewAttribute id="FORECAST_QTY" aggregationType="sum"/>
+      <viewAttribute id="LOCATION_KEY"/>
+      <viewAttribute id="ADJUSTMENT_QTY" aggregationType="sum"/>
+      <viewAttribute id="ADJUSTMENT_AMT" aggregationType="sum"/>
+      <viewAttribute id="DATE_KEY" aggregationType="sum"/>
+      <viewAttribute hidden="true" id="JOIN$PRODUCT_KEY$PRODUCT_KEY"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="Union_1">
+      <mapping xsi:type="Calculation:AttributeMapping" target="SALES_QTY" source="SALES_QTY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="CUSTOMER_KEY" source="CUSTOMER_KEY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="FORECAST_QTY" source="FORECAST_QTY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="LOCATION_KEY" source="LOCATION_KEY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ADJUSTMENT_QTY" source="ADJUSTMENT_QTY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ADJUSTMENT_AMT" source="ADJUSTMENT_AMT"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="DATE_KEY" source="DATE_KEY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$PRODUCT_KEY$PRODUCT_KEY" source="PRODUCT_KEY"/>
+    </input>
+    <input node="PRODUCT_DIM">
+      <mapping xsi:type="Calculation:AttributeMapping" target="CATEGORY" source="CATEGORY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="PRODUCT_NAME" source="PRODUCT_NAME"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$PRODUCT_KEY$PRODUCT_KEY" source="PRODUCT_KEY"/>
+    </input>
+    <joinAttribute name="JOIN$PRODUCT_KEY$PRODUCT_KEY"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:JoinView" id="Join_2" cardinality="CN_1" joinType="leftOuter" optimizeJoinColumns="true">
+    <viewAttributes>
+      <viewAttribute id="CATEGORY"/>
+      <viewAttribute id="CUSTOMER_NAME"/>
+      <viewAttribute id="PRODUCT_NAME"/>
+      <viewAttribute id="CUSTOMER_TYPE"/>
+      <viewAttribute id="SALES_QTY" aggregationType="sum"/>
+      <viewAttribute id="FORECAST_QTY" aggregationType="sum"/>
+      <viewAttribute id="LOCATION_KEY"/>
+      <viewAttribute id="ADJUSTMENT_QTY" aggregationType="sum"/>
+      <viewAttribute id="ADJUSTMENT_AMT" aggregationType="sum"/>
+      <viewAttribute id="DATE_KEY" aggregationType="sum"/>
+      <viewAttribute hidden="true" id="JOIN$CUSTOMER_KEY$CUSTOMER_KEY"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="Join_1">
+      <mapping xsi:type="Calculation:AttributeMapping" target="CATEGORY" source="CATEGORY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="PRODUCT_NAME" source="PRODUCT_NAME"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="SALES_QTY" source="SALES_QTY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="FORECAST_QTY" source="FORECAST_QTY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="LOCATION_KEY" source="LOCATION_KEY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ADJUSTMENT_QTY" source="ADJUSTMENT_QTY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="ADJUSTMENT_AMT" source="ADJUSTMENT_AMT"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="DATE_KEY" source="DATE_KEY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$CUSTOMER_KEY$CUSTOMER_KEY" source="CUSTOMER_KEY"/>
+    </input>
+    <input node="CUSTOMER_DIM">
+      <mapping xsi:type="Calculation:AttributeMapping" target="CUSTOMER_NAME" source="CUSTOMER_NAME"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="CUSTOMER_TYPE" source="CUSTOMER_TYPE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$CUSTOMER_KEY$CUSTOMER_KEY" source="CUSTOMER_KEY"/>
+    </input>
+    <joinAttribute name="JOIN$CUSTOMER_KEY$CUSTOMER_KEY"/>
+  </calculationView>
+</calculationViews>
+<logicalModel id="Join_2">
+  <attributes>
+    <attribute id="CATEGORY" order="1" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="CATEGORY"/>
+      <keyMapping columnObjectName="Join_2" columnName="CATEGORY"/>
+    </attribute>
+    <attribute id="CUSTOMER_NAME" order="2" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="CUSTOMER_NAME"/>
+      <keyMapping columnObjectName="Join_2" columnName="CUSTOMER_NAME"/>
+    </attribute>
+  
+    <attribute id="PRODUCT_NAME" order="3" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="PRODUCT_NAME"/>
+  
+      <keyMapping columnObjectName="Join_2" columnName="PRODUCT_NAME"/>
+  
+    </attribute>
+    <attribute id="CUSTOMER_TYPE" order="4" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="CUSTOMER_TYPE"/>
+      <keyMapping columnObjectName="Join_2" columnName="CUSTOMER_TYPE"/>
+    </attribute>
+  
+    <attribute id="LOCATION_KEY" order="10" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="LOCATION_KEY"/>
+  
+      <keyMapping columnObjectName="Join_2" columnName="LOCATION_KEY"/>
+  
+    </attribute>
+  </attributes>
+  <calculatedAttributes>
+    <calculatedAttribute id="productName_category" order="5" semanticType="empty" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="productName_category"/>
+      <keyCalculation datatype="NVARCHAR" expressionLanguage="SQL" length="20">
+        <formula>CONCAT(CONCAT(&quot;PRODUCT_NAME&quot;, '-'),&quot;CATEGORY&quot;)</formula>
+      </keyCalculation>
+    </calculatedAttribute>
+  </calculatedAttributes>
+  <baseMeasures>
+    <measure id="SALES_QTY" order="8" aggregationType="sum" measureType="simple">
+      <descriptions defaultDescription="SALES_QTY"/>
+      <measureMapping columnObjectName="Join_2" columnName="SALES_QTY"/>
+      <exceptionAggregationMetadata/>
+    </measure>
+    <measure id="FORECAST_QTY" order="9" aggregationType="sum" measureType="simple">
+      <descriptions defaultDescription="FORECAST_QTY"/>
+      <measureMapping columnObjectName="Join_2" columnName="FORECAST_QTY"/>
+      <exceptionAggregationMetadata/>
+    </measure>
+  
+    <measure id="ADJUSTMENT_QTY" order="11" aggregationType="sum" measureType="simple">
+      <descriptions defaultDescription="ADJUSTMENT_QTY"/>
+  
+      <measureMapping columnObjectName="Join_2" columnName="ADJUSTMENT_QTY"/>
+      <exceptionAggregationMetadata/>
+    </measure>
+    <measure id="ADJUSTMENT_AMT" order="12" aggregationType="sum" measureType="simple">
+      <descriptions defaultDescription="ADJUSTMENT_AMT"/>
+      <measureMapping columnObjectName="Join_2" columnName="ADJUSTMENT_AMT"/>
+      <exceptionAggregationMetadata/>
+    </measure>
+  
+    <measure id="DATE_KEY" order="13" aggregationType="sum" measureType="simple">
+      <descriptions defaultDescription="DATE_KEY"/>
+  
+      <measureMapping columnObjectName="Join_2" columnName="DATE_KEY"/>
+      <exceptionAggregationMetadata/>
+    </measure>
+  </baseMeasures>
+  <calculatedMeasures>
+    <measure id="Deviation_per" order="7" aggregationType="sum" measureType="simple" datatype="DECIMAL" length="6" scale="4" expressionLanguage="SQL">
+      <descriptions defaultDescription="Deviation(%)"/>
+      <formula>((&quot;SALES_QTY&quot;-&quot;FORECAST_QTY&quot;)/&quot;SALES_QTY&quot;)*100</formula>
+      <exceptionAggregationMetadata/>
+    </measure>
+  </calculatedMeasures>
+  <restrictedMeasures>
+    <measure id="BEVERAGE_QTY" order="6" aggregationType="sum" datatype="DECIMAL" length="18" scale="3" restrictionExpressionLanguage="SQL" baseMeasure="SALES_QTY">
+      <descriptions defaultDescription="BEVERAGE_QTY"/>
+      <restriction logicalOperator="AND">
+        <filter xsi:type="Privilege:AttributeFilter" attributeName="CATEGORY" datatype="NVARCHAR">
+          <valueFilter xsi:type="AccessControl:SingleValueFilter" including="true" value="Beverage"/>
+        </filter>
+        <attributeName>CATEGORY</attributeName>
+      </restriction>
+      <exceptionAggregationMetadata/>
+    </measure>
+  </restrictedMeasures>
+  <localDimensions/>
+</logicalModel>
+<layout>
+  <shapes>
+    <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+      <upperLeftCorner x="321" y="112"/>
+    
+      <rectangleSize width="160"/>
+    </shape>
+  
+    <shape expanded="true" modelObjectName="FACT_SALES" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="92" y="816"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="PRODUCT_DIM" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="107" y="536"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="CUSTOMER_DIM" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="394" y="376"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="FACT_PROJ" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="512" y="691"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="Projection_1" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="302" y="691"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="Projection_2" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="92" y="691"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+  
+  
+  
+    <shape expanded="true" modelObjectName="Union_1" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="328" y="536"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+  
+    <shape expanded="true" modelObjectName="Join_1" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="134" y="376"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape modelObjectName="Union_1" modelObjectNameSpace="Join_1" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="16" y="16"/>
+      <rectangleSize width="196"/>
+    </shape>
+    <shape modelObjectName="PRODUCT_DIM" modelObjectNameSpace="Join_1" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="276" y="32"/>
+      <rectangleSize width="198"/>
+    </shape>
+    <shape expanded="true" modelObjectName="Join_2" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="321" y="217"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape modelObjectName="Join_1" modelObjectNameSpace="Join_2" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="20" y="30"/>
+      <rectangleSize width="250"/>
+    </shape>
+    <shape modelObjectName="CUSTOMER_DIM" modelObjectNameSpace="Join_2" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="320" y="30"/>
+      <rectangleSize width="206"/>
+    </shape></shapes>
+</layout>
+</Calculation:scenario>

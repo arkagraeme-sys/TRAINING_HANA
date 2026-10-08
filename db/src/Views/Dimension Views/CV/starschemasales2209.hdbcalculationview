@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="training.Views.Dimension Views.CV::starschemasales2209" applyPrivilegeType="NONE" dataCategory="CUBE" schemaVersion="3.0" hierarchyGeneration="SQL" application="BAS" cacheInvalidationPeriod="NONE" enforceSqlExecution="true">
+<descriptions defaultDescription="starschemasales2209"/>
+<localVariables/>
+<variableMappings/>
+<dataSources>
+  <DataSource id="training.Tables::FACT_SALES">
+    <resourceUri>training.Tables::FACT_SALES</resourceUri>
+  </DataSource>
+</dataSources>
+<snapshotProcedures/>
+<calculationViews>
+  <calculationView xsi:type="Calculation:ProjectionView" id="FACT_SALES">
+    <viewAttributes>
+      <viewAttribute id="CUSTOMER_KEY"/>
+      <viewAttribute id="PRODUCT_KEY"/>
+      <viewAttribute id="LOCATION_KEY"/>
+      <viewAttribute id="SCENARIO_KEY"/>
+      <viewAttribute id="SALES_QTY"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="training.Tables::FACT_SALES"/>
+  </calculationView>
+</calculationViews>
+<logicalModel id="FACT_SALES">
+  <attributes>
+    <attribute id="CUSTOMER_KEY_1" order="1" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="CUSTOMER_KEY_1"/>
+      <keyMapping columnObjectName="FACT_SALES" columnName="CUSTOMER_KEY"/>
+    </attribute>
+    <attribute id="PRODUCT_KEY_1" order="2" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="PRODUCT_KEY_1"/>
+      <keyMapping columnObjectName="FACT_SALES" columnName="PRODUCT_KEY"/>
+    </attribute>
+    <attribute id="LOCATION_KEY" order="3" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="LOCATION_KEY"/>
+      <keyMapping columnObjectName="FACT_SALES" columnName="LOCATION_KEY"/>
+    </attribute>
+    <attribute id="SCENARIO_KEY_1" order="4" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="SCENARIO_KEY_1"/>
+      <keyMapping columnObjectName="FACT_SALES" columnName="SCENARIO_KEY"/>
+    </attribute>
+    <attribute id="CUSTOMER_KEY$local">
+      <descriptions defaultDescription="CUSTOMER_KEY"/>
+      <keyMapping columnObjectName="FACT_SALES" columnName="CUSTOMER_KEY"/>
+    </attribute>
+    <attribute id="PRODUCT_KEY$local">
+      <descriptions defaultDescription="PRODUCT_KEY"/>
+      <keyMapping columnObjectName="FACT_SALES" columnName="PRODUCT_KEY"/>
+    </attribute>
+    <attribute id="SCENARIO_KEY$local">
+      <descriptions defaultDescription="SCENARIO_KEY"/>
+      <keyMapping columnObjectName="FACT_SALES" columnName="SCENARIO_KEY"/>
+    </attribute>
+  </attributes>
+  <calculatedAttributes/>
+  <baseMeasures>
+    <measure id="SALES_QTY" order="5" aggregationType="sum" measureType="simple">
+      <descriptions defaultDescription="SALES_QTY"/>
+      <measureMapping columnObjectName="FACT_SALES" columnName="SALES_QTY"/>
+      <exceptionAggregationMetadata/>
+    </measure>
+  </baseMeasures>
+  <calculatedMeasures/>
+  <restrictedMeasures/>
+  <localDimensions/>
+  <sharedDimensions>
+    <logicalJoin associatedObjectUri="training.Views.Dimension Views::customer_dim">
+      <attributes>
+        <attributeRef>CUSTOMER_KEY$local</attributeRef>
+      </attributes>
+      <associatedAttributeNames>
+        <attributeName>CUSTOMER_KEY</attributeName>
+      </associatedAttributeNames>
+      <properties cardinality="CN_N" joinType="leftOuter" joinOperator="Equal"/>
+      <associatedAttributeFeatures/>
+    </logicalJoin>
+    <logicalJoin associatedObjectUri="training.Views.Dimension Views::product_dim">
+      <attributes>
+        <attributeRef>PRODUCT_KEY$local</attributeRef>
+      </attributes>
+      <associatedAttributeNames>
+        <attributeName>PRODUCT_KEY</attributeName>
+      </associatedAttributeNames>
+      <properties cardinality="CN_N" joinType="inner" joinOperator="Equal"/>
+      <associatedAttributeFeatures/>
+    </logicalJoin>
+    <logicalJoin associatedObjectUri="training.Views.Dimension Views::scenario">
+      <attributes>
+        <attributeRef>SCENARIO_KEY$local</attributeRef>
+      </attributes>
+      <associatedAttributeNames>
+        <attributeName>SCENARIO_KEY</attributeName>
+      </associatedAttributeNames>
+      <properties cardinality="CN_N" joinType="leftOuter" joinOperator="Equal"/>
+      <associatedAttributeFeatures/>
+    </logicalJoin>
+  </sharedDimensions>
+</logicalModel>
+<layout>
+  <shapes>
+    <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+      <upperLeftCorner x="40" y="85"/>
+    </shape>
+  
+    <shape expanded="true" modelObjectName="FACT_SALES" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="100" y="245"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape modelObjectName="FACT_SALES" modelObjectNameSpace="StarJoinViewNodeInput" modelObjectType="repository">
+      <upperLeftCorner x="407" y="64"/>
+      <rectangleSize width="196"/>
+    </shape>
+    <shape modelObjectName="training.Views.Dimension Views::customer_dim" modelObjectNameSpace="StarJoinViewNodeSharedCV" modelObjectType="repository">
+      <upperLeftCorner x="668" y="16"/>
+      <rectangleSize width="336"/>
+    </shape>
+    <shape modelObjectName="training.Views.Dimension Views::product_dim" modelObjectNameSpace="StarJoinViewNodeSharedCV" modelObjectType="repository">
+      <upperLeftCorner x="16" y="64"/>
+      <rectangleSize width="327"/>
+    </shape>
+    <shape modelObjectName="training.Views.Dimension Views::scenario" modelObjectNameSpace="StarJoinViewNodeSharedCV" modelObjectType="repository">
+      <upperLeftCorner x="668" y="169"/>
+      <rectangleSize width="304"/>
+    </shape>
+  </shapes>
+</layout>
+</Calculation:scenario>

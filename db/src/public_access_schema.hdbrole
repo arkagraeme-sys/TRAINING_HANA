@@ -1,0 +1,18 @@
+{
+  "role": {
+    "name": "training::PUB_ACC_SCHEMA",
+    "schema_privileges": [
+      {
+        "privileges": [
+          "SELECT",
+          "EXECUTE",
+          "INSERT",
+          "UPDATE",
+          "DELETE",
+          "ALTER",
+          "CREATE ANY"
+        ]
+      }
+    ]
+  }
+}

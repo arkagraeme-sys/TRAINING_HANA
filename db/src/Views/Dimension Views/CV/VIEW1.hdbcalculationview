@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="training.Views.Dimension Views.CV::VIEW1" applyPrivilegeType="NONE" dataCategory="CUBE" schemaVersion="3.0" hierarchyGeneration="SQL" outputViewType="Aggregation" application="BAS" cacheInvalidationPeriod="NONE" enforceSqlExecution="true">
+<descriptions defaultDescription="VIEW1"/>
+<localVariables>
+  <variable id="Var_REGION">
+    <descriptions defaultDescription="Select Region"/>
+    <variableProperties datatype="NVARCHAR" length="50" defaultValue="">
+      <valueDomain type="AttributeValue">
+        <attribute name="REGION"/>
+      </valueDomain>
+      <selection type="SingleValue"/>
+    </variableProperties>
+  </variable>
+</localVariables>
+<variableMappings/>
+<dataSources>
+  <DataSource id="training.Tables::FACT_SALES">
+    <resourceUri>training.Tables::FACT_SALES</resourceUri>
+  </DataSource>
+  <DataSource id="training.Tables::DIM_LOCATION">
+    <resourceUri>training.Tables::DIM_LOCATION</resourceUri>
+  </DataSource>
+</dataSources>
+<snapshotProcedures/>
+<calculationViews>
+  <calculationView xsi:type="Calculation:ProjectionView" id="Projection_1">
+    <viewAttributes>
+      <viewAttribute id="DATE_KEY"/>
+      <viewAttribute id="CUSTOMER_KEY"/>
+      <viewAttribute id="PRODUCT_KEY"/>
+      <viewAttribute id="LOCATION_KEY"/>
+      <viewAttribute id="SALES_ORG_KEY"/>
+      <viewAttribute id="SCENARIO_KEY"/>
+      <viewAttribute id="KPI_KEY"/>
+      <viewAttribute id="SOURCE_KEY"/>
+      <viewAttribute id="SALES_QTY"/>
+      <viewAttribute id="SALES_AMT"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="training.Tables::FACT_SALES"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:ProjectionView" id="Projection_2">
+    <viewAttributes>
+      <viewAttribute id="LOCATION_KEY"/>
+      <viewAttribute id="CITY"/>
+      <viewAttribute id="STATE"/>
+      <viewAttribute id="REGION"/>
+      <viewAttribute id="COUNTRY"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="training.Tables::DIM_LOCATION"/>
+  </calculationView>
+  <calculationView xsi:type="Calculation:JoinView" id="Join_1" cardinality="CN_N" joinType="inner">
+    <viewAttributes>
+      <viewAttribute id="DATE_KEY" aggregationType="sum"/>
+      <viewAttribute id="CUSTOMER_KEY"/>
+      <viewAttribute id="PRODUCT_KEY"/>
+      <viewAttribute id="LOCATION_KEY"/>
+      <viewAttribute id="SALES_ORG_KEY"/>
+      <viewAttribute id="SCENARIO_KEY"/>
+      <viewAttribute id="KPI_KEY"/>
+      <viewAttribute id="SOURCE_KEY"/>
+      <viewAttribute id="SALES_QTY" aggregationType="sum"/>
+      <viewAttribute id="SALES_AMT" aggregationType="sum"/>
+      <viewAttribute id="CITY"/>
+      <viewAttribute id="STATE"/>
+      <viewAttribute id="REGION"/>
+      <viewAttribute id="COUNTRY"/>
+      <viewAttribute hidden="true" id="JOIN$LOCATION_KEY$LOCATION_KEY"/>
+    </viewAttributes>
+    <calculatedViewAttributes/>
+    <input node="Projection_1">
+      <mapping xsi:type="Calculation:AttributeMapping" target="DATE_KEY" source="DATE_KEY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="CUSTOMER_KEY" source="CUSTOMER_KEY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="PRODUCT_KEY" source="PRODUCT_KEY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="LOCATION_KEY" source="LOCATION_KEY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="SALES_ORG_KEY" source="SALES_ORG_KEY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="SCENARIO_KEY" source="SCENARIO_KEY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="KPI_KEY" source="KPI_KEY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="SOURCE_KEY" source="SOURCE_KEY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="SALES_QTY" source="SALES_QTY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="SALES_AMT" source="SALES_AMT"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$LOCATION_KEY$LOCATION_KEY" source="LOCATION_KEY"/>
+    </input>
+    <input node="Projection_2">
+      <mapping xsi:type="Calculation:AttributeMapping" target="CITY" source="CITY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="STATE" source="STATE"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="REGION" source="REGION"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="COUNTRY" source="COUNTRY"/>
+      <mapping xsi:type="Calculation:AttributeMapping" target="JOIN$LOCATION_KEY$LOCATION_KEY" source="LOCATION_KEY"/>
+    </input>
+    <joinAttribute name="JOIN$LOCATION_KEY$LOCATION_KEY"/>
+  </calculationView>
+</calculationViews>
+<logicalModel id="Join_1">
+  <attributes>
+    <attribute id="REGION" order="1" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="REGION"/>
+      <localVariable>Var_REGION</localVariable>
+      <keyMapping columnObjectName="Join_1" columnName="REGION"/>
+    </attribute>
+    <attribute id="LOCATION_KEY" order="3" descriptionColumnName="REGION" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="LOCATION_KEY"/>
+      <keyMapping columnObjectName="Join_1" columnName="LOCATION_KEY"/>
+    </attribute>
+  </attributes>
+  <calculatedAttributes/>
+  <baseMeasures>
+    <measure id="SALES_QTY" order="2" aggregationType="sum" measureType="simple">
+      <descriptions defaultDescription="SALES_QTY"/>
+      <measureMapping columnObjectName="Join_1" columnName="SALES_QTY"/>
+      <exceptionAggregationMetadata/>
+    </measure>
+  </baseMeasures>
+  <calculatedMeasures/>
+  <restrictedMeasures/>
+  <localDimensions/>
+</logicalModel>
+<layout>
+  <shapes>
+    <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+      <upperLeftCorner x="221.11302679000914" y="112"/>
+    
+      <rectangleSize width="160"/>
+    </shape>
+  
+    <shape expanded="true" modelObjectName="Projection_1" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="92.00000000000001" y="376.9999988079071"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="Projection_2" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="302.00000000000006" y="376.9999988079071"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape expanded="true" modelObjectName="Join_1" modelObjectNameSpace="CalculationView">
+      <upperLeftCorner x="221.11302679000914" y="217"/>
+      <rectangleSize height="30" width="160"/>
+    </shape>
+    <shape modelObjectName="Projection_1" modelObjectNameSpace="Join_1" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="20" y="30"/>
+      <rectangleSize width="200.767578125"/>
+    </shape>
+    <shape modelObjectName="Projection_2" modelObjectNameSpace="Join_1" modelObjectType="JoinNodeInput">
+      <upperLeftCorner x="320" y="30"/>
+      <rectangleSize width="189.5419921875"/>
+    </shape>
+  </shapes>
+</layout>
+</Calculation:scenario>

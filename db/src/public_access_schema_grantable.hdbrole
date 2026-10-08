@@ -1,0 +1,14 @@
+{
+  "role": {
+    "name": "training::PUB_ACC_SCHEMA_GRANT#",
+    "object_privileges": [
+      {
+        "name": "training.Views.Dimension Views.CV::test2209_cube",
+        "type": "VIEW",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      }
+    ]
+  }
+}

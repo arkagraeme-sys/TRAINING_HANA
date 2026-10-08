@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Calculation:scenario xmlns:Calculation="http://www.sap.com/ndb/BiModelCalculation.ecore" id="training.Views.Dimension Views::product_dim" applyPrivilegeType="NONE" dataCategory="DIMENSION" dimensionType="STANDARD" schemaVersion="3.0" hierarchyGeneration="SQL" outputViewType="Projection" application="BAS" cacheInvalidationPeriod="NONE" enforceSqlExecution="true">
+<descriptions defaultDescription="product_dim"/>
+<localVariables/>
+<variableMappings/>
+<dataSources>
+  <DataSource id="training.Tables::DIM_PRODUCT">
+    <resourceUri>training.Tables::DIM_PRODUCT</resourceUri>
+  </DataSource>
+</dataSources>
+<snapshotProcedures/>
+<calculationViews/>
+<logicalModel id="training.Tables::DIM_PRODUCT">
+  <attributes>
+    <attribute id="PRODUCT_KEY" order="1" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="PRODUCT_KEY"/>
+      <keyMapping columnObjectName="DIM_PRODUCT" columnName="PRODUCT_KEY"/>
+    </attribute>
+    <attribute id="PRODUCT_NAME" order="2" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="PRODUCT_NAME"/>
+      <keyMapping columnObjectName="DIM_PRODUCT" columnName="PRODUCT_NAME"/>
+    </attribute>
+    <attribute id="CATEGORY" order="3" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="CATEGORY"/>
+      <keyMapping columnObjectName="DIM_PRODUCT" columnName="CATEGORY"/>
+    </attribute>
+    <attribute id="BRAND" order="4" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="BRAND"/>
+      <keyMapping columnObjectName="DIM_PRODUCT" columnName="BRAND"/>
+    </attribute>
+    <attribute id="PACK_SIZE" order="5" displayAttribute="false" attributeHierarchyActive="false">
+      <descriptions defaultDescription="PACK_SIZE"/>
+      <keyMapping columnObjectName="DIM_PRODUCT" columnName="PACK_SIZE"/>
+    </attribute>
+  </attributes>
+  <calculatedAttributes/>
+  <baseMeasures/>
+  <calculatedMeasures/>
+  <restrictedMeasures/>
+</logicalModel>
+<layout>
+  <shapes>
+    <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
+      <upperLeftCorner x="40" y="85"/>
+    </shape>
+  </shapes>
+</layout>
+</Calculation:scenario>
