@@ -1,0 +1,12 @@
+{
+  "role": {
+    "name": "training::cust_type_role",
+    "schema_analytic_privileges": [
+      {
+        "privileges": [
+          "training.AP::customer_type"
+        ]
+      }
+    ]
+  }
+}

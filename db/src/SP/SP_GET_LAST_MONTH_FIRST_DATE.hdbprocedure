@@ -1,0 +1,29 @@
+PROCEDURE "training.SP::SP_GET_LAST_MONTH_FIRST_DATE" (
+    OUT LAST_MONTH_FIRST_DATE NVARCHAR(8)
+)
+LANGUAGE SQLSCRIPT
+SQL SECURITY INVOKER
+AS
+BEGIN
+
+    /*
+      Example:
+      If CURRENT_DATE = 2026-10-01
+      then LAST_MONTH_FIRST_DATE = 2026-09-01
+
+      Logic:
+      1. ADD_MONTHS(CURRENT_DATE, -1)
+         -> same day in previous month
+      2. DAYOFMONTH(...)
+         -> day number of that date
+      3. Subtract (day - 1) days
+         -> first day of that month
+    */
+
+    LAST_MONTH_FIRST_DATE :=
+        TO_NVARCHAR(ADD_DAYS(
+            ADD_MONTHS(CURRENT_DATE, -1),
+            1 - DAYOFMONTH(ADD_MONTHS(CURRENT_DATE, -1))
+        ),'YYYYMMDD');
+
+END;

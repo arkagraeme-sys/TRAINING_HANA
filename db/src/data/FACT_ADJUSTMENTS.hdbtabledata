@@ -1,0 +1,30 @@
+{
+  "format_version": 1,
+  "imports": [
+    {
+      "target_table": "training.Tables::FACT_ADJUSTMENTS",
+      "source_data": {
+        "data_type": "CSV",
+        "file_name": "training.data::FACT_ADJUSTMENTS.csv",
+        "has_header": true,
+        "dialect": "HANA"
+      },
+      "import_settings": {
+        "include_filter": [],
+        "exclude_filter": [],
+        "column_mappings": {
+          "DATE_KEY": "DATE_KEY",
+          "CUSTOMER_KEY": "CUSTOMER_KEY",
+          "PRODUCT_KEY": "PRODUCT_KEY",
+          "LOCATION_KEY": "LOCATION_KEY",
+          "SALES_ORG_KEY": "SALES_ORG_KEY",
+          "SCENARIO_KEY": "SCENARIO_KEY",
+          "KPI_KEY": "KPI_KEY",
+          "SOURCE_KEY": "SOURCE_KEY",
+          "ADJUSTMENT_QTY": "ADJUSTMENT_QTY",
+          "ADJUSTMENT_AMT": "ADJUSTMENT_AMT"
+        }
+      }
+    }
+  ]
+}

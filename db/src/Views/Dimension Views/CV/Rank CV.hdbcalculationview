@@ -265,9 +265,7 @@
     <rankingFilter type="RANK" offset="0" offsetReference="FRONT" dynamicPartitionAttributes="false">
       <partitionViewAttributeName id="REGION"/>
       <order byViewAttributeName="ACTUAL_AMT" direction="ASC"/>
-      <rankThreshold>
-        <value>1</value>
-      </rankThreshold>
+      <rankThreshold/>
     </rankingFilter>
   </calculationView>
 </calculationViews>
@@ -342,34 +340,34 @@
 <layout>
   <shapes>
     <shape expanded="true" modelObjectName="Output" modelObjectNameSpace="MeasureGroup">
-      <upperLeftCorner x="441.11436516432036" y="112"/>
+      <upperLeftCorner x="441" y="112"/>
     
       <rectangleSize width="160"/>
     </shape>
   
     <shape expanded="true" modelObjectName="ACT" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="92.00000000000001" y="926.9999952316284"/>
+      <upperLeftCorner x="92" y="926"/>
       <rectangleSize height="30" width="160"/>
     </shape>
     <shape expanded="true" modelObjectName="FCST" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="302" y="926.9999952316284"/>
+      <upperLeftCorner x="302" y="926"/>
       <rectangleSize height="30" width="160"/>
     </shape>
     <shape expanded="true" modelObjectName="Projection_1" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="384.16457466851165" y="786.9999964237213"/>
+      <upperLeftCorner x="384" y="786"/>
       <rectangleSize height="30" width="160"/>
     </shape>
     <shape expanded="true" modelObjectName="Projection_2" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="489.74246969474535" y="626.9999976158142"/>
+      <upperLeftCorner x="489" y="626"/>
       <rectangleSize height="30" width="160"/>
     </shape>
   
     <shape expanded="true" modelObjectName="Union_1" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="118.66666666666664" y="786.9999964237213"/>
+      <upperLeftCorner x="118" y="786"/>
       <rectangleSize height="30" width="160"/>
     </shape>
     <shape expanded="true" modelObjectName="Join_1" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="145.33333333333326" y="626.9999976158142"/>
+      <upperLeftCorner x="145" y="626"/>
       <rectangleSize height="30" width="160"/>
     </shape>
     <shape modelObjectName="Union_1" modelObjectNameSpace="Join_1" modelObjectType="JoinNodeInput">
@@ -381,7 +379,7 @@
       <rectangleSize width="136"/>
     </shape>
     <shape expanded="true" modelObjectName="Join_2" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="425.6855344530451" y="466.9999988079071"/>
+      <upperLeftCorner x="425" y="466"/>
       <rectangleSize height="30" width="160"/>
     </shape>
     <shape modelObjectName="Join_1" modelObjectNameSpace="Join_2" modelObjectType="JoinNodeInput">
@@ -393,11 +391,11 @@
       <rectangleSize width="190"/>
     </shape>
     <shape expanded="true" modelObjectName="Aggregation_1" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="425.6855344530451" y="361.9999988079071"/>
+      <upperLeftCorner x="425" y="361"/>
       <rectangleSize height="30" width="160"/>
     </shape>
     <shape expanded="true" modelObjectName="Rank_1" modelObjectNameSpace="CalculationView">
-      <upperLeftCorner x="441.11436516432036" y="217"/>
+      <upperLeftCorner x="441" y="217"/>
       <rectangleSize height="30" width="160"/>
     </shape>
   </shapes>

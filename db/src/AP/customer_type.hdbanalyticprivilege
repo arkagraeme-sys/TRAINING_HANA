@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Privilege:analyticPrivilege xmlns:Privilege="http://www.sap.com/ndb/BiModelPrivilege.ecore" id="training.AP::customer_type" privilegeType="SQL_ANALYTIC_PRIVILEGE" schemaVersion="1.1">
+<descriptions defaultDescription="customer_type"/>
+<securedModels>
+  <modelUri>training.Views.Dimension Views.CV::test2209_wrapper</modelUri>
+</securedModels>
+<whereSql>&quot;CUSTOMER_TYPE&quot; = 'Retail'</whereSql>
+</Privilege:analyticPrivilege>

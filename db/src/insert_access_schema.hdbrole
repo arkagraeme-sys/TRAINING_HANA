@@ -1,0 +1,25 @@
+{
+  "role": {
+    "name": "training::INSERT_ACC_SCHEMA#",
+    "schema_privileges": [
+      {
+        "privileges_with_grant_option": [
+          "INSERT",
+          "SELECT",
+          "UPDATE",
+          "DELETE",
+          "ALTER",
+          "CREATE ANY",
+          "CREATE OBJECT STRUCTURED PRIVILEGE",
+          "CREATE TEMPORARY TABLE",
+          "DEBUG",
+          "DEBUG MODIFY",
+          "EXECUTE",
+          "SELECT CDS METADATA",
+          "SELECT METADATA",
+          "UNMASKED"
+        ]
+      }
+    ]
+  }
+}
