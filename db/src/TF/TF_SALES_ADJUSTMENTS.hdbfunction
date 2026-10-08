@@ -14,6 +14,7 @@ RETURNS TABLE (
     ADJUSTMENT_QTY       DECIMAL(18,3),
     ADJUSTMENT_AMT       DECIMAL(18,2),
     NET_QTY              DECIMAL(18,3),
+    NET_AMT              DECIMAL(18,10)
     NET_AMT              DECIMAL(18,2)
 )
 LANGUAGE SQLSCRIPT
